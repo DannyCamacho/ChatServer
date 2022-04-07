@@ -9,7 +9,6 @@ import java.util.*;
 
 public class ChatServer {
     private int port;
-    private int clientNo = 0;
     private Set<String> userNames = new HashSet<>();
     private Set<UserThread> userThreads = new HashSet<>();
     private ServerController controller;
@@ -34,8 +33,8 @@ public class ChatServer {
 
                     Platform.runLater( () -> {
                         InetAddress inetAddress = socket.getInetAddress();
-                        print("Starting thread for Client " + ++clientNo + " at " + new Date() + '\n');
-                        print("Client " + clientNo + "'s username is " + newUser.getUserName() + " (IP Address: " + inetAddress.getHostAddress() + ")\n");
+                        print("Starting thread for Client " + inetAddress.getHostName() + " at " + new Date() + '\n');
+                        print("Client's username is " + newUser.getUserName() + " (IP Address: " + inetAddress.getHostAddress() + ")\n");
                     });
                 }
             } catch(IOException ex) {
@@ -54,12 +53,13 @@ public class ChatServer {
     }
 
     void print(String message) {
-        controller.update(message);
+        Platform.runLater( () -> controller.update(message));
+
     }
 
     void addUserName(String userName) {
         userNames.add(userName);
-        controller.addClient(userName);
+        Platform.runLater( () -> controller.addClient(userName));
     }
 
     void addUserThread(UserThread userThread) {
@@ -71,7 +71,7 @@ public class ChatServer {
         if (removed)
             userThreads.remove(aUser);
 
-        controller.removeClient(userName);
+        Platform.runLater( () -> controller.removeClient(userName));
     }
 
     Set<String> getUserNames() {
