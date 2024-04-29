@@ -1,6 +1,7 @@
 # ChatServer
 
 Light-weight Chat Server built in Java using JavaFX. Use the ChatClient to connect to the server and chat with connected users
+
 ChatClient: https://github.com/DannyCamacho/ChatClient
 
 ## Launch Window
